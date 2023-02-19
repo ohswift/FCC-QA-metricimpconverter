@@ -37,11 +37,15 @@ function ConvertHandler() {
     if (split == null) {
       return CONVER_ERR_INVALID_UNIT;
     }
-    input = split[2];
-    let result = this.spellOutUnit(input);
+    let unit = split[2];
+    if (unit == "l" || unit == "L") {
+      unit = "L";
+    } else {
+      unit = unit.toLowerCase();
+    }
     let units = ["L", "gal", "kg", "lbs", "km", "mi"];
-    if (units.includes(result)) {
-      return result;
+    if (units.includes(unit)) {
+      return unit;
     }
     return CONVER_ERR_INVALID_UNIT;
   };
@@ -60,12 +64,16 @@ function ConvertHandler() {
   };
 
   this.spellOutUnit = function (unit) {
+    let unitMap = {
+      L: "liters",
+      gal: "gallons",
+      kg: "kilograms",
+      lbs: "pounds",
+      km: "kilometers",
+      mi: "miles",
+    };
     let result;
-    if (unit == "l" || unit == "L") {
-      result = "L";
-    } else {
-      result = unit.toLowerCase();
-    }
+    result = unitMap[unit];
     return result;
   };
 
@@ -94,12 +102,14 @@ function ConvertHandler() {
         result = initNum * miToKm;
         break;
     }
-    return result;
+    return Math.round(result * 1e5) / 1e5;
   };
 
   this.getString = function (initNum, initUnit, returnNum, returnUnit) {
     let result;
-    result = `${initNum} ${initUnit} converts to ${returnNum} ${returnUnit}`;
+    result = `${initNum} ${this.spellOutUnit(
+      initUnit
+    )} converts to ${returnNum} ${this.spellOutUnit(returnUnit)}`;
     return result;
   };
 
@@ -123,8 +133,8 @@ function ConvertHandler() {
     return {
       initNum,
       initUnit,
-      returnUnit,
       returnNum,
+      returnUnit,
       string,
     };
   };

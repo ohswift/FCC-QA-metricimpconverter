@@ -12,6 +12,8 @@ const miToKm = 1.60934;
 
 let convertHandler = new ConvertHandler();
 
+const MathRound = (num) => Math.round(num * 1e5) / 1e5;
+
 suite("Unit Tests", function () {
   // input number
   test("#1 whole number input", function () {
@@ -61,31 +63,31 @@ suite("Unit Tests", function () {
   });
 
   test("#10 return the spelled-out string unit for each valid input unit", function () {
-    assert.equal(convertHandler.getUnit("l"), "L");
-    assert.equal(convertHandler.getUnit("gal"), "gal");
-    assert.equal(convertHandler.getUnit("mi"), "mi");
-    assert.equal(convertHandler.getUnit("km"), "km");
-    assert.equal(convertHandler.getUnit("lbs"), "lbs");
-    assert.equal(convertHandler.getUnit("kg"), "kg");
+    assert.equal(convertHandler.spellOutUnit("L"), "liters");
+    assert.equal(convertHandler.spellOutUnit("gal"), "gallons");
+    assert.equal(convertHandler.spellOutUnit("mi"), "miles");
+    assert.equal(convertHandler.spellOutUnit("km"), "kilometers");
+    assert.equal(convertHandler.spellOutUnit("lbs"), "pounds");
+    assert.equal(convertHandler.spellOutUnit("kg"), "kilograms");
   });
   // convert
   test("#11 gal to L", function () {
     assert.equal(convertHandler.convert(1, "gal"), 1 * galToL);
   });
   test("#12 L to gal", function () {
-    assert.equal(convertHandler.convert(1, "L"), 1 / galToL);
+    assert.equal(convertHandler.convert(1, "L"), MathRound(1 / galToL));
   });
 
   test("#13 mi to km", function () {
     assert.equal(convertHandler.convert(1, "mi"), 1 * miToKm);
   });
   test("#14 km to mi", function () {
-    assert.equal(convertHandler.convert(1, "km"), 1 / miToKm);
+    assert.equal(convertHandler.convert(1, "km"), MathRound(1 / miToKm));
   });
   test("#15 lbs to kg", function () {
-    assert.equal(convertHandler.convert(1, "lbs"), 1 * lbsToKg);
+    assert.equal(convertHandler.convert(1, "lbs"), MathRound(1 * lbsToKg));
   });
   test("#16 kg to lbs", function () {
-    assert.equal(convertHandler.convert(1, "kg"), 1 / lbsToKg);
+    assert.equal(convertHandler.convert(1, "kg"), MathRound(1 / lbsToKg));
   });
 });

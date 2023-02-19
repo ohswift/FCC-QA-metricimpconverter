@@ -13,18 +13,24 @@ const server = require("../server");
 
 chai.use(chaiHttp);
 
+const MathRound = (num) => Math.round(num * 1e5) / 1e5;
+
 suite("Functional Tests", function () {
   test("#1 Test valid input", function (done) {
     chai
       .request(server)
       .get("/api/convert?input=10L")
       .end(function (err, res) {
+        const returnNum = MathRound(10 / galToL);
         assert.equal(res.status, 200);
         assert.equal(res.body.initNum, 10);
         assert.equal(res.body.initUnit, "L");
-        assert.equal(res.body.returnNum, 10 / galToL);
+        assert.equal(res.body.returnNum, returnNum);
         assert.equal(res.body.returnUnit, "gal");
-        assert.equal(res.body.string, `10 L converts to ${10 / galToL} gal`);
+        assert.equal(
+          res.body.string,
+          `10 liters converts to ${returnNum} gallons`
+        );
         done();
       });
   });
@@ -63,12 +69,13 @@ suite("Functional Tests", function () {
       .request(server)
       .get("/api/convert?input=kg")
       .end(function (err, res) {
+        const returnNum = Math.round((1 / lbsToKg) * 1e5) / 1e5;
         assert.equal(res.status, 200);
         assert.equal(res.body.initNum, 1);
         assert.equal(res.body.initUnit, "kg");
-        assert.equal(res.body.returnNum, 1 / lbsToKg);
+        assert.equal(res.body.returnNum, returnNum);
         assert.equal(res.body.returnUnit, "lbs");
-        assert.equal(res.body.string, `1 kg converts to ${1 / lbsToKg} lbs`);
+        assert.equal(res.body.string, `1 kilograms converts to ${returnNum} pounds`);
         done();
       });
   });
